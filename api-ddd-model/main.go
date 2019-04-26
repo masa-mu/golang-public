@@ -1,13 +1,16 @@
 package main
 
 import (
-	"github.com/labstack/echo"
 	"golang-public/api-ddd-model/message"
 	"golang-public/api-ddd-model/mysql"
+
+	"github.com/labstack/echo"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
-func App() (*echo.Echo){
-	messageDB,err := mysql.GetConnectionDB()
+func App() *echo.Echo {
+	messageDB, err := mysql.GetConnectionDB()
 	if err != nil {
 		panic(err)
 	}
@@ -16,7 +19,7 @@ func App() (*echo.Echo){
 
 	e := echo.New()
 	g := e.Group("/ddd/v1")
-	g.POST("/message", messageHandler.GetMessage)
+	g.GET("/message", messageHandler.GetMessage)
 
 	return e
 }
