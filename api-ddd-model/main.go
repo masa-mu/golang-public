@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/go-playground/validator"
 	"golang-public/api-ddd-model/message"
 	"golang-public/api-ddd-model/mysql"
 
@@ -8,6 +9,18 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 )
+
+type CustomValidator struct {
+	validator *validator.Validate
+}
+
+func NewValidator() echo.Validator {
+	return &CustomValidator{validator: validator.New()}
+}
+
+func (cv *CustomValidator) Validate(i interface{}) error {
+	return cv.validator.Struct(i)
+}
 
 func App() *echo.Echo {
 	messageDB, err := mysql.GetConnectionDB()
@@ -18,6 +31,9 @@ func App() *echo.Echo {
 	messageHandler := message.NewHandler(message.NewModel(message.NewRepository(messageDB)))
 
 	e := echo.New()
+
+	e.Validator = NewValidator()
+
 	g := e.Group("/ddd/v1")
 	g.GET("/message", messageHandler.GetMessage)
 

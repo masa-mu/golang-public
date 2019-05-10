@@ -21,3 +21,8 @@
 ```aidl
 $ docker-compose up --build
 ```
+
+## サンプルリクエスト
+```aidl
+$ curl http://localhost:8000/ddd/v1/message?id=12345
+```
