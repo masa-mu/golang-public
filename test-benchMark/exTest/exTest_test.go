@@ -1,38 +1,63 @@
-package sample_test
+package exTest_test
 
 import (
-	"golang-public/bench-mark/sample"
+	"golang-public/test-benchMark/exTest"
+	"math/rand"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-func BenchmarkAdd(b *testing.B) {
-	Sw := sample.NewSample()
+func TestAdd(t *testing.T) {
+	tests := []struct {
+		name string
+		f    func(*testing.T)
+	}{
+		{
+			"1~10のランダムな数字が3個追加される",
+			func(t *testing.T) {
+				Sw := exTest.NewSample()
+				for i := 0; i < 3; i++ {
+					Sw.Add(rand.Intn(10))
+				}
+				assert.Equal(t, len(Sw.Get()), 3)
+			},
+		},
+		{
+			"1~10のランダムな数字が5個追加される",
+			func(t *testing.T) {
+				Sw := exTest.NewSample()
+				for i := 0; i < 5; i++ {
+					Sw.Add(rand.Intn(10))
+				}
+				assert.Equal(t, len(Sw.Get()), 5)
+			},
+		},
+	}
 
-	for i := 0; i < b.N; i++ {
-		Sw.Add(b.N)
+	for _, tt := range tests {
+		t.Run(tt.name, tt.f)
 	}
 }
 
-func BenchmarkLen(b *testing.B) {
-	Sw := sample.NewSample()
-	b.ResetTimer()
-
-	for i := 0; i < 100; i++ {
-		Sw.Len()
+func TestLen(t *testing.T) {
+	tests := []struct {
+		name string
+		f    func(*testing.T)
+	}{
+		{
+			"1~10のランダムな数字が3個追加される",
+			func(t *testing.T) {
+				Sw := exTest.NewSample()
+				for i := 0; i < 3; i++ {
+					Sw.Add(rand.Intn(10))
+				}
+				assert.Equal(t, Sw.Len(), 3)
+			},
+		},
 	}
-}
 
-func TestAdd(b *testing.T) {
-	Sw := sample.NewSample()
-	for i := 0; i < 3; i++ {
-		Sw.Add(1)
-	}
-}
-
-func TestLen(b *testing.T) {
-	Sw := sample.NewSample()
-
-	for i := 0; i < 200; i++ {
-		Sw.Len()
+	for _, tt := range tests {
+		t.Run(tt.name, tt.f)
 	}
 }
