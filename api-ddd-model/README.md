@@ -1,17 +1,12 @@
+## 概要
+APIのサンプルモデルを作成する
 
 ## midleware
 - mysql
 - docker
-- 
-- 
-- 
 
 ## go plugin
 - github.com/jinzhu/gorm
-- 
-- 
-- 
-- 
 
 ## memo
 - AWSにするならMysqlのアカウント情報はSecretManagerに保持する
